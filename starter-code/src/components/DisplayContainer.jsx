@@ -1,43 +1,32 @@
 import React,{ useState } from 'react';
 import RawInput from './RawInput';
+import marked from 'marked';
 
 const DisplayContainer= props=> {
 
-    let [mdStr, setMdStr] = useState('')
+    let [value, setValue] = useState('')
   
+    
+    const handleTextValueChange=(event)=>{
+        console.log(event.target.value)
+        value =event.target.value
+        setValue(value)
+      
+    }
+
+    let convertMarkdown = () =>{
+        var rawMarkup = marked(value);
+        return { __html: rawMarkup };
+    }
 
    return(
-         <RawInput  />
+        <div>
+               <RawInput value={value}  handleTextValueChange={(event) => handleTextValueChange(event)}/>
+            <div id="preview" dangerouslySetInnerHTML={convertMarkdown()}></div>
+        </div>
+      
           )
     }
 
 export default DisplayContainer
 
-
-/*
-
-import React , {useState} from 'react';
-import marked from 'marked';
-import RawInput from './RawInput'
-const DisplayContainer = () => {
-    const [value, setValue] = useState('Some markdown text.')
-    let handleValueChange = (event) => {
-            setValue(event.target.value)
-    }
-    let convertMarkdown = () =>{
-        var rawMarkup = marked(value);
-        return { __html: rawMarkup };
-    }
-    return (
-        <div id='DisplayContainer'>
-                <RawInput value={value} handleValueChange={(event) => handleValueChange(event)} />
-                <div className="rawContainer">
-                    Display Container
-                    <div id='preview' dangerouslySetInnerHTML={convertMarkdown()}></div>
-                </div>
-        </div>
-    );
-}
-export default DisplayContainer;
-
-*/
